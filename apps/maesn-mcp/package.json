@@ -1,0 +1,63 @@
+{
+  "name": "@maesn-mcp/maesn-mcp",
+  "version": "0.0.1",
+  "private": true,
+  "nx": {
+    "targets": {
+      "build": {
+        "executor": "@nx/esbuild:esbuild",
+        "outputs": [
+          "{options.outputPath}"
+        ],
+        "defaultConfiguration": "production",
+        "options": {
+          "platform": "node",
+          "outputPath": "apps/maesn-mcp/dist",
+          "format": [
+            "cjs"
+          ],
+          "bundle": false,
+          "main": "apps/maesn-mcp/src/main.ts",
+          "tsConfig": "apps/maesn-mcp/tsconfig.app.json",
+          "assets": [
+            "apps/maesn-mcp/src/assets"
+          ],
+          "esbuildOptions": {
+            "sourcemap": true,
+            "outExtension": {
+              ".js": ".js"
+            }
+          }
+        },
+        "configurations": {
+          "development": {},
+          "production": {
+            "generateLockfile": true,
+            "esbuildOptions": {
+              "sourcemap": false,
+              "outExtension": {
+                ".js": ".js"
+              }
+            }
+          }
+        }
+      },
+      "serve": {
+        "command": "npx -y @modelcontextprotocol/inspector node ./apps/maesn-mcp/dist/main.js",
+        "dependsOn": ["build"],
+        "continuous": true
+      },
+      "test": {
+        "options": {
+          "passWithNoTests": true
+        }
+      },
+      "docker-build": {
+        "dependsOn": [
+          "build"
+        ],
+        "command": "docker build -f apps/maesn-mcp/Dockerfile . -t maesn-mcp-maesn-mcp"
+      }
+    }
+  }
+}

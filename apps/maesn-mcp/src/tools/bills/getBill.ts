@@ -1,10 +1,11 @@
 import { z } from 'zod';
+import { checkStoredHeaders } from '../../commons';
 
 const inputSchema = z.object({
   headers: z.object({
-    apiKey: z.string().describe('Your maesn X-API-KEY'),
-    accountKey: z.string().describe('Your maesn X-ACCOUNT-KEY'),
-  }),
+    apiKey: z.string().describe('Your maesn X-API-KEY').optional(),
+    accountKey: z.string().describe('Your maesn X-ACCOUNT-KEY').optional(),
+  }).optional(),
   path: z.object({
     billId: z.string().describe('The unique id of the bill'),
   }),
@@ -43,10 +44,12 @@ export const apiTool = {
 
     try {
 
+      const {apiKey, accountKey} = checkStoredHeaders(headers);
+
       const response = await fetch(url.toString(), {
         headers: {
-          'X-API-KEY': headers.apiKey,
-          'X-ACCOUNT-KEY': headers.accountKey,
+          'X-API-KEY': apiKey,
+          'X-ACCOUNT-KEY': accountKey,
         },
       });
 

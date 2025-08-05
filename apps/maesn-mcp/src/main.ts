@@ -58,6 +58,9 @@ async function main() {
   const transport = new StdioServerTransport();
   await server.connect(transport);
   console.error('MCP server running...');
+  console.error('API key from env: ', process.env.API_KEY)
+  console.error('account key from env: ', process.env.ACCOUNT_KEY);
+
 }
 
 main().catch(console.error);

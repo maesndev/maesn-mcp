@@ -1,10 +1,11 @@
 import { z } from 'zod';
+import { checkStoredHeaders } from '../../commons';
 
 const inputSchema = z.object({
   headers: z.object({
-    apiKey: z.string().describe('Your maesn X-API-KEY'),
-    accountKey: z.string().describe('Your maesn X-ACCOUNT-KEY'),
-  }),
+    apiKey: z.string().describe('Your maesn X-API-KEY').optional(),
+    accountKey: z.string().describe('Your maesn X-ACCOUNT-KEY').optional(),
+  }).optional(),
   path: z.object({
     customerId: z.string().describe('The unique id of the customer'),
   }),
@@ -41,13 +42,15 @@ export const apiTool = {
     if (query?.rawData)
       url.searchParams.append('rawData', query.rawData.toString());
 
+    const {apiKey, accountKey} = checkStoredHeaders(headers);
+
     try {
 
 
       const response = await fetch(url.toString(), {
         headers: {
-          'X-API-KEY': headers.apiKey,
-          'X-ACCOUNT-KEY': headers.accountKey,
+          'X-API-KEY': apiKey,
+          'X-ACCOUNT-KEY': accountKey,
         },
       });
 

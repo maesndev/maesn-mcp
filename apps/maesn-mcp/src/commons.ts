@@ -1,28 +1,27 @@
-/*
-import dotenv from 'dotenv';
-import path from 'path';
-
-dotenv.config({ path: path.resolve(__dirname, '.env') });
-
-export function checkStoredApiKey(headers: any) {
+function checkStoredApiKey(headers: any) {
+  let apiKey = headers.apiKey ?? "";
   if (!process.env.API_KEY && !headers.apiKey) {
-    console.error('API key is missing.');
+    process.stderr.write('API key is missing.');
   }
   if (process.env.API_KEY && !headers.apiKey) {
-    headers.apiKey = process.env.API_KEY;
+    apiKey = process.env.API_KEY;
   }
-  return headers.apiKey;
+  return apiKey;
 }
 
-export function checkStoredAccountKey(headers: any) {
+function checkStoredAccountKey(headers: any) {
+  let accountKey = headers.accountKey ?? "";
   if (!process.env.ACCOUNT_KEY && !headers.accountKey) {
-    console.error('API key is missing.');
+    process.stderr.write('Account key is missing.');
   }
   if (process.env.ACCOUNT_KEY && !headers.accountKey) {
-    headers.accountKey = process.env.ACCOUNT_KEY;
+    accountKey = process.env.ACCOUNT_KEY;
   }
-  return headers.accountKey;
+  return accountKey;
 }
 
-
- */
+export function checkStoredHeaders(headers: any) {
+  const apiKey = checkStoredApiKey(headers);
+  const accountKey = checkStoredAccountKey(headers);
+  return {apiKey, accountKey};
+}

@@ -3,8 +3,8 @@ import { checkStoredHeaders } from '../../commons';
 
 const inputSchema = z.object({
   headers: z.object({
-    apiKey: z.string().describe('Your maesn X-API-KEY').optional(),
-    accountKey: z.string().describe('Your maesn X-ACCOUNT-KEY').optional(),
+    apiKey: z.string().describe('Your maesn X-API-KEY. This field is optional if you have stored your credentials in the .evn file.').optional(),
+    accountKey: z.string().describe('Your maesn X-ACCOUNT-KEY. This field is optional if you have stored your credentials in the .evn file.').optional(),
   }).optional(),
   query: z.object({
     pagination: z

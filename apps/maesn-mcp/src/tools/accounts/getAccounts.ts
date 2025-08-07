@@ -1,10 +1,11 @@
 import { z } from 'zod';
+import { checkStoredHeaders } from '../../commons';
 
 const inputSchema = z.object({
   headers: z.object({
-    apiKey: z.string().describe('Your maesn X-API-KEY'),
-    accountKey: z.string().describe('Your maesn X-ACCOUNT-KEY'),
-  }),
+    apiKey: z.string().describe('Your maesn X-API-KEY. This field is optional if you have stored your credentials in the .env file.').optional(),
+    accountKey: z.string().describe('Your maesn X-ACCOUNT-KEY. This field is optional if you have stored your credentials in the .env file.').optional(),
+  }).optional(),
   query: z.object({
     pagination: z
       .object({
@@ -61,11 +62,14 @@ export const apiTool = {
       url.searchParams.append('rawData', query.rawData.toString());
     if (query?.debitCreditIndicator) url.searchParams.append('debitCreditIndicator', query.debitCreditIndicator);
 
+    const {apiKey, accountKey} = checkStoredHeaders(headers);
+
     try {
+
       const response = await fetch(url.toString(), {
         headers: {
-          'X-API-KEY': headers.apiKey,
-          'X-ACCOUNT-KEY': headers.accountKey,
+          'X-API-KEY': apiKey,
+          'X-ACCOUNT-KEY': accountKey,
         },
       });
 

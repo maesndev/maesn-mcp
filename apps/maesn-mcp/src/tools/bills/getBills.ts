@@ -36,11 +36,6 @@ const inputSchema = z.object({
         .describe(
           'Set to true if you want to retrieve the raw data from the target system'
         ),
-      status: z.enum(['DRAFT', 'CORRECTIVE', 'SUBMITTED', 'DOCUMENT_CREATED', 'OPEN', 'PARTIALLY_PAID', 'PAID', 'PARTIALLY_OVERDUE', 'OVERDUE', 'VOIDED']).optional().describe('Filter bills by status'),
-      paymentStatus: z
-        .enum(['NO_OPEN_ITEM', 'PENDING', 'PARTLY_PAID', 'PAID', 'DEBITED', 'CREDIT_NOTE_CLEARED', 'CLEARED_WITH_CREDIT_NOTE', 'BAD_DEBT', 'PARTIAL_CANCELLATION','CANCELED', 'UNKNOWN'])
-        .optional()
-        .describe('Filter bills by payment status'),
     })
     .optional(),
 });
@@ -66,8 +61,6 @@ export const apiTool = {
     if (query?.companyId) url.searchParams.append('companyId', query.companyId);
     if (query?.rawData)
       url.searchParams.append('rawData', query.rawData.toString());
-    if (query?.status) url.searchParams.append('status', query.status);
-    if (query?.paymentStatus) url.searchParams.append('paymentStatus', query.paymentStatus);
 
     const {apiKey, accountKey} = checkStoredHeaders(headers);
 

@@ -21,7 +21,7 @@ const inputSchema = z.object({
       lastModifiedAt: z
         .string()
         .optional()
-        .describe('Filter invoices modified after this date in ISO format'),
+        .describe('Filter vendorCredits modified after this date in ISO format'),
       environmentName: z
         .string()
         .optional()
@@ -36,30 +36,17 @@ const inputSchema = z.object({
         .describe(
           'Set to true if you want to retrieve the raw data from the target system'
         ),
-      status: z.enum(['DRAFT', 'CORRECTIVE', 'SUBMITTED', 'DOCUMENT_CREATED', 'OPEN', 'PARTIALLY_PAID', 'PAID', 'PARTIALLY_OVERDUE', 'OVERDUE', 'VOIDED']).optional().describe('Filter invoices by status'),
-      paymentStatus: z
-        .enum(['NO_OPEN_ITEM', 'PENDING', 'PARTLY_PAID', 'PAID', 'DEBITED', 'CREDIT_NOTE_CLEARED', 'CLEARED_WITH_CREDIT_NOTE', 'BAD_DEBT', 'PARTIAL_CANCELLATION','CANCELED', 'UNKNOWN'])
-        .optional()
-        .describe('Filter invoices by payment status'),
-      orderField: z
-        .string()
-        .optional()
-        .describe("The field that you want to order the response on"),
-      orderDir: z
-        .string()
-        .optional()
-        .describe("The direction of the ordering, either 'asc' or 'desc'"),
     })
     .optional(),
 });
 
 export const apiTool = {
-  name: 'getInvoices',
-  description: 'Get a list of invoices',
+  name: 'getVendorCredits',
+  description: 'Get a list of vendor credits',
   input: inputSchema,
   run: async ({ headers, query }: z.infer<typeof inputSchema>) => {
     const url = new URL(
-      `https://unified-backend-prod.azurewebsites.net/accounting/invoices`
+      `https://unified-backend-prod.azurewebsites.net/accounting/vendorCredits`
     );
     if (query?.pagination) {
       if (query.pagination.page)
@@ -74,10 +61,7 @@ export const apiTool = {
     if (query?.companyId) url.searchParams.append('companyId', query.companyId);
     if (query?.rawData)
       url.searchParams.append('rawData', query.rawData.toString());
-    if (query?.status) url.searchParams.append('status', query.status);
-    if (query?.paymentStatus) url.searchParams.append('paymentStatus', query.paymentStatus);
-    if (query?.orderField) url.searchParams.append('orderField', query.orderField);
-    if (query?.orderDir) url.searchParams.append('orderDir', query.orderDir);
+
     const {apiKey, accountKey} = checkStoredHeaders(headers);
 
     try {
@@ -94,32 +78,38 @@ export const apiTool = {
 
       const data = await response.json();
 
-      const mapped = data.data.map((invoice: any) => ({
-        invoiceId: invoice.invoiceId,
-        addresses: invoice.addresses,
-        contactId: invoice.contactId,
-        createdDate: invoice.createdDate,
-        currency: invoice.currency,
-        discountAmount: invoice.discountAmount,
-        dueDate: invoice.dueDate,
-        invoiceDate: invoice.invoiceDate,
-        invoiceNumber: invoice.invoiceNumber,
-        invoiceType: invoice.invoiceType,
-        lineAmountTypes: invoice.lineAmountTypes,
-        lineItems: invoice.lineItems,
-        name: invoice.name,
-        oneLineAddress: invoice.oneLineAddress,
-        paidDate: invoice.paidDate,
-        paymentStatus: invoice.paymentStatus,
-        paymentTermDuration: invoice.paymentTermDuration,
-        reference: invoice.reference,
-        shippingDate: invoice.shippingDate,
-        status: invoice.status,
-        sumNetAmount: invoice.sumNetAmount,
-        taxRule: invoice.taxRule,
-        totalAmount: invoice.totalAmount,
-        totalTaxAmount: invoice.totalTaxAmount,
-        updatedDate: invoice.updatedDate,
+      const mapped = data.data.map((vendorCredit: any) => ({
+        id: vendorCredit.id,
+        accountId: vendorCredit.accountId,
+        addresses: vendorCredit.addresses,
+        contactId: vendorCredit.contactId,
+        createdDate: vendorCredit.createdDate,
+        currency: vendorCredit.currency,
+        deliveryDate: vendorCredit.deliveryDate,
+        dueDate: vendorCredit.dueDate,
+        fileId: vendorCredit.fileId,
+        journalCode: vendorCredit.journalCode,
+        lineItems: vendorCredit.lineItems,
+        name: vendorCredit.name,
+        oneLineAddress: vendorCredit.oneLineAddress,
+        paidDate: vendorCredit.paidDate,
+        paymentDays: vendorCredit.paymentDays,
+        paymentStatus: vendorCredit.paymentStatus,
+        paymentTermId: vendorCredit.paymentTermId,
+        reference: vendorCredit.reference,
+        shippingDate: vendorCredit.shippingDate,
+        shippingType: vendorCredit.shippingType,
+        status: vendorCredit.status,
+        taxRule: vendorCredit.taxRule,
+        taxText: vendorCredit.taxText,
+        totalDiscountAmount: vendorCredit.totalDiscountAmount,
+        totalDiscountPercentage: vendorCredit.totalDiscountPercentage,
+        totalGrossAmount: vendorCredit.totalGrossAmount,
+        totalNetAmount: vendorCredit.totalNetAmount,
+        totalTaxAmount: vendorCredit.totalTaxAmount,
+        updatedDate: vendorCredit.updatedDate,
+        vendorCreditDate: vendorCredit.vendorCreditDate,
+        vendorCreditNumber: vendorCredit.vendorCreditNumber,
       }));
 
       return {

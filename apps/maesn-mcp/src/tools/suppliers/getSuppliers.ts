@@ -20,7 +20,7 @@ const inputSchema = z.object({
     lastModifiedAt: z
       .string()
       .optional()
-      .describe('Filter accounts modified after this date in ISO format'),
+      .describe('Filter suppliers modified after this date in ISO format'),
     environmentName: z
       .string()
       .optional()
@@ -35,19 +35,19 @@ const inputSchema = z.object({
       .describe(
         'Set to true if you want to retrieve the raw data from the target system'
       ),
-    debitCreditIndicator: z.enum(['DEBIT', 'CREDIT']).optional().describe('Filter accounts based on if they are debit or credit'),
-    fiscalYear: z.string().optional().describe('Filter accounts based on fiscal year'),
-
+    email: z.string().optional().describe('Filter suppliers by email'),
+    name: z.string().optional().describe('Filter suppliers by name'),
+    number: z.string().optional().describe('Filter suppliers by number'),
   }).optional(),
 });
 
 export const apiTool = {
-  name: 'getAccounts',
-  description: 'Get a list of accounts',
+  name: 'getSuppliers',
+  description: 'Get a list of suppliers',
   input: inputSchema,
   run: async ({ headers, query }: z.infer<typeof inputSchema>) => {
     const url = new URL(
-      `https://unified-backend-prod.azurewebsites.net/accounting/accounts`
+      `https://unified-backend-prod.azurewebsites.net/accounting/suppliers`
     );
     if (query?.pagination) {
       if (query.pagination.page)
@@ -62,13 +62,13 @@ export const apiTool = {
     if (query?.companyId) url.searchParams.append('companyId', query.companyId);
     if (query?.rawData)
       url.searchParams.append('rawData', query.rawData.toString());
-    if (query?.debitCreditIndicator) url.searchParams.append('debitCreditIndicator', query.debitCreditIndicator);
-    if (query?.fiscalYear) url.searchParams.append('fiscalYear', query.fiscalYear);
+    if (query?.email) url.searchParams.append('email', query.email);
+    if (query?.name) url.searchParams.append('name', query.name);
+    if (query?.number) url.searchParams.append('number', query.number);
 
     const {apiKey, accountKey} = checkStoredHeaders(headers);
 
     try {
-
       const response = await fetch(url.toString(), {
         headers: {
           'X-API-KEY': apiKey,
@@ -82,21 +82,19 @@ export const apiTool = {
 
       const data = await response.json();
 
-      const mapped = data.data.map((account: any) => ({
-        id: account.id,
-        balance: account.balance,
-        class: account.class,
-        code: account.code,
-        createdDate: account.createdDate,
-        currency: account.currency,
-        debitCreditIndicator: account.debitCreditIndicator,
-        description: account.description,
-        name: account.name,
-        number: account.number,
-        parentAccountId: account.parentAccountId,
-        status: account.status,
-        type: account.type,
-        updatedDate: account.updatedDate,
+      const mapped = data.data.map((supplier: any) => ({
+        id: supplier.id,
+        addresses: supplier.addresses,
+        companyName: supplier.companyName,
+        contactType: supplier.contactType,
+        contactPersons: supplier.contactPersons,
+        documentId: supplier.documentId,
+        emailAddresses: supplier.emailAddresses,
+        number: supplier.number,
+        phoneNumbers: supplier.phoneNumbers,
+        projectId: supplier.projectId,
+        updatedDate: supplier.updatedDate,
+        vatId: supplier.vatId,
       }));
 
       return {

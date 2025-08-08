@@ -3,8 +3,8 @@ import { checkStoredHeaders } from '../../commons';
 
 const inputSchema = z.object({
   headers: z.object({
-    apiKey: z.string().describe('Your maesn X-API-KEY. This field is optional if you have stored your credentials in the .env file.').optional(),
-    accountKey: z.string().describe('Your maesn X-ACCOUNT-KEY. This field is optional if you have stored your credentials in the .env file.').optional(),
+    apiKey: z.string().describe('Your maesn X-API-KEY. This field is optional if you have stored your credentials in the .evn file.').optional(),
+    accountKey: z.string().describe('Your maesn X-ACCOUNT-KEY. This field is optional if you have stored your credentials in the .evn file.').optional(),
   }).optional(),
   query: z
     .object({
@@ -21,7 +21,7 @@ const inputSchema = z.object({
       lastModifiedAt: z
         .string()
         .optional()
-        .describe('Filter invoices modified after this date in ISO format'),
+        .describe('Filter offers modified after this date in ISO format'),
       environmentName: z
         .string()
         .optional()
@@ -36,30 +36,18 @@ const inputSchema = z.object({
         .describe(
           'Set to true if you want to retrieve the raw data from the target system'
         ),
-      status: z.enum(['DRAFT', 'CORRECTIVE', 'SUBMITTED', 'DOCUMENT_CREATED', 'OPEN', 'PARTIALLY_PAID', 'PAID', 'PARTIALLY_OVERDUE', 'OVERDUE', 'VOIDED']).optional().describe('Filter invoices by status'),
-      paymentStatus: z
-        .enum(['NO_OPEN_ITEM', 'PENDING', 'PARTLY_PAID', 'PAID', 'DEBITED', 'CREDIT_NOTE_CLEARED', 'CLEARED_WITH_CREDIT_NOTE', 'BAD_DEBT', 'PARTIAL_CANCELLATION','CANCELED', 'UNKNOWN'])
-        .optional()
-        .describe('Filter invoices by payment status'),
-      orderField: z
-        .string()
-        .optional()
-        .describe("The field that you want to order the response on"),
-      orderDir: z
-        .string()
-        .optional()
-        .describe("The direction of the ordering, either 'asc' or 'desc'"),
+      status: z.enum(['DRAFT', 'SENT', 'ACCEPTED', 'EXPIRED', 'VOIDED', 'DECLINED']).optional().describe('Filter offers by status'),
     })
     .optional(),
 });
 
 export const apiTool = {
-  name: 'getInvoices',
-  description: 'Get a list of invoices',
+  name: 'getOffers',
+  description: 'Get a list of offers',
   input: inputSchema,
   run: async ({ headers, query }: z.infer<typeof inputSchema>) => {
     const url = new URL(
-      `https://unified-backend-prod.azurewebsites.net/accounting/invoices`
+      `https://unified-backend-prod.azurewebsites.net/accounting/offers`
     );
     if (query?.pagination) {
       if (query.pagination.page)
@@ -75,9 +63,7 @@ export const apiTool = {
     if (query?.rawData)
       url.searchParams.append('rawData', query.rawData.toString());
     if (query?.status) url.searchParams.append('status', query.status);
-    if (query?.paymentStatus) url.searchParams.append('paymentStatus', query.paymentStatus);
-    if (query?.orderField) url.searchParams.append('orderField', query.orderField);
-    if (query?.orderDir) url.searchParams.append('orderDir', query.orderDir);
+
     const {apiKey, accountKey} = checkStoredHeaders(headers);
 
     try {
@@ -94,32 +80,26 @@ export const apiTool = {
 
       const data = await response.json();
 
-      const mapped = data.data.map((invoice: any) => ({
-        invoiceId: invoice.invoiceId,
-        addresses: invoice.addresses,
-        contactId: invoice.contactId,
-        createdDate: invoice.createdDate,
-        currency: invoice.currency,
-        discountAmount: invoice.discountAmount,
-        dueDate: invoice.dueDate,
-        invoiceDate: invoice.invoiceDate,
-        invoiceNumber: invoice.invoiceNumber,
-        invoiceType: invoice.invoiceType,
-        lineAmountTypes: invoice.lineAmountTypes,
-        lineItems: invoice.lineItems,
-        name: invoice.name,
-        oneLineAddress: invoice.oneLineAddress,
-        paidDate: invoice.paidDate,
-        paymentStatus: invoice.paymentStatus,
-        paymentTermDuration: invoice.paymentTermDuration,
-        reference: invoice.reference,
-        shippingDate: invoice.shippingDate,
-        status: invoice.status,
-        sumNetAmount: invoice.sumNetAmount,
-        taxRule: invoice.taxRule,
-        totalAmount: invoice.totalAmount,
-        totalTaxAmount: invoice.totalTaxAmount,
-        updatedDate: invoice.updatedDate,
+      const mapped = data.data.map((offer: any) => ({
+        id: offer.id,
+        addresses: offer.addresses,
+        contactId: offer.contactId,
+        createdDate: offer.createdDate,
+        currency: offer.currency,
+        lineItems: offer.lineItems,
+        name: offer.name,
+        offerDate: offer.offerDate,
+        offerNumber: offer.offerNumber,
+        oneLineAddress: offer.oneLineAddress,
+        reference: offer.reference,
+        status: offer.status,
+        taxText: offer.taxText,
+        totalDiscountAmount: offer.totalDiscountAmount,
+        totalDiscountPercentage: offer.totalDiscountPercentage,
+        totalGrossAmount: offer.totalGrossAmount,
+        totalNetAmount: offer.totalNetAmount,
+        totalTaxAmount: offer.totalTaxAmount,
+        updatedDate: offer.updatedDate,
       }));
 
       return {

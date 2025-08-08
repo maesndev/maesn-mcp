@@ -3,8 +3,8 @@ import { checkStoredHeaders } from '../../commons';
 
 const inputSchema = z.object({
   headers: z.object({
-    apiKey: z.string().describe('Your maesn X-API-KEY. This field is optional if you have stored your credentials in the .env file.').optional(),
-    accountKey: z.string().describe('Your maesn X-ACCOUNT-KEY. This field is optional if you have stored your credentials in the .env file.').optional(),
+    apiKey: z.string().describe('Your maesn X-API-KEY').optional(),
+    accountKey: z.string().describe('Your maesn X-ACCOUNT-KEY').optional(),
   }).optional(),
   query: z
     .object({
@@ -21,7 +21,7 @@ const inputSchema = z.object({
       lastModifiedAt: z
         .string()
         .optional()
-        .describe('Filter bills modified after this date in ISO format'),
+        .describe('Filter expenses modified after this date in ISO format'),
       environmentName: z
         .string()
         .optional()
@@ -41,12 +41,12 @@ const inputSchema = z.object({
 });
 
 export const apiTool = {
-  name: 'getBills',
-  description: 'Get a list of bills',
+  name: 'getExpenses',
+  description: 'Get a list of expenses',
   input: inputSchema,
   run: async ({ headers, query }: z.infer<typeof inputSchema>) => {
     const url = new URL(
-      `https://unified-backend-prod.azurewebsites.net/accounting/bills`
+      `https://unified-backend-prod.azurewebsites.net/accounting/expenses`
     );
     if (query?.pagination) {
       if (query.pagination.page)
@@ -78,38 +78,32 @@ export const apiTool = {
 
       const data = await response.json();
 
-      const mapped = data.data.map((bill: any) => ({
-        id: bill.id,
-        accountId: bill.accountId,
-        addresses: bill.addresses,
-        billDate: bill.billDate,
-        billNumber: bill.billNumber,
-        contactId: bill.contactId,
-        createdDate: bill.createdDate,
-        currency: bill.currency,
-        deliveryDate: bill.deliveryDate,
-        dueDate: bill.dueDate,
-        fileId: bill.fileId,
-        journalCode: bill.journalCode,
-        lineItems: bill.lineItems,
-        name: bill.name,
-        oneLineAddress: bill.oneLineAddress,
-        paidDate: bill.paidDate,
-        paymentDays: bill.paymentDays,
-        paymentStatus: bill.paymentStatus,
-        paymentTermId: bill.paymentTermId,
-        reference: bill.reference,
-        shippingDate: bill.shippingDate,
-        shippingType: bill.shippingType,
-        status: bill.status,
-        taxRule: bill.taxRule,
-        taxText: bill.taxText,
-        totalDiscountAmount: bill.totalDiscountAmount,
-        totalDiscountPercentage: bill.totalDiscountPercentage,
-        totalGrossAmount: bill.totalGrossAmount,
-        totalNetAmount: bill.totalNetAmount,
-        totalTaxAmount: bill.totalTaxAmount,
-        updatedDate: bill.updatedDate,
+      const mapped = data.data.map((expense: any) => ({
+        id: expense.id,
+        accountCode : expense.accountCode,
+        accountId: expense.accountId,
+        accountNumber: expense.accountNumber,
+        createdDate: expense.createdDate,
+        currency: expense.currency,
+        customerId: expense.customerId,
+        description: expense.description,
+        documentId: expense.documentId,
+        exchangeRate: expense.exchangeRate,
+        expenseLines: expense.expenseLines,
+        files: expense.files,
+        journalCode: expense.journalCode,
+        ledgerName: expense.ledgerName,
+        note: expense.note,
+        paymentTermId: expense.paymentTermId,
+        paymentType: expense.paymentType,
+        supplierId: expense.supplierId,
+        taskId : expense.taskId,
+        type: expense.type,
+        totalGrossAmount: expense.totalGrossAmount,
+        totalNetAmount: expense.totalNetAmount,
+        totalTaxAmount: expense.totalTaxAmount,
+        transactionDate: expense.transactionDate,
+        updatedDate: expense.updatedDate,
       }));
 
       return {

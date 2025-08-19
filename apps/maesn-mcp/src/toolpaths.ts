@@ -1,9 +1,11 @@
 export const toolPaths = [
   './tools/accounts/getAccounts.js',
   './tools/accounts/getAccount.js',
+  './tools/accounts/createAccount.js',
 
   './tools/bankAccounts/getBankAccounts.js',
   './tools/bankAccounts/getBankAccount.js',
+  './tools/bankAccounts/createBankAccount.js',
 
   './tools/bills/getBills.js',
   './tools/bills/getBill.js',
@@ -13,11 +15,15 @@ export const toolPaths = [
 
   './tools/customers/getCustomers.js',
   './tools/customers/getCustomer.js',
+  './tools/customers/createCustomer.js',
+  './tools/customers/putCustomer.js',
+  './tools/customers/patchCustomer.js',
 
   './tools/dimensions/getDimensions.js',
 
   './tools/expenses/getExpenses.js',
   './tools/expenses/getExpense.js',
+  './tools/expenses/createExpense.js',
 
   './tools/goodsReceipts/getGoodsReceipts.js',
   './tools/goodsReceipts/getGoodsReceipt.js',
@@ -52,9 +58,14 @@ export const toolPaths = [
 
   './tools/suppliers/getSuppliers.js',
   './tools/suppliers/getSupplier.js',
+  './tools/suppliers/createSupplier.js',
+  './tools/suppliers/putSupplier.js',
+  './tools/suppliers/patchSupplier.js',
 
   './tools/taxRates/getTaxRates.js',
   './tools/taxRates/getTaxRate.js',
+
+  './tools/transactions/createTransaction.js',
 
   './tools/units/getUnits.js',
 

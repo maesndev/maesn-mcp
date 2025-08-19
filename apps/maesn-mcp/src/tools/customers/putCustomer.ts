@@ -5,11 +5,15 @@ const addressSchema = z.object({
   addressLine1: z.string().describe('Street name and number').optional(),
   addressLine2: z.string().describe('Street name and number').optional(),
   city: z.string().describe('City name').optional(),
-  countryCode: z.string().describe('Country code in ISO 3166-1 alpha-2 format').optional(),
+  countryCode: z
+    .string()
+    .describe('Country code in ISO 3166-1 alpha-2 format')
+    .optional(),
   postalCode: z.string().describe('Postal code').optional(),
   type: z
     .enum(['BILLING', 'DELIVERY', 'EMPTY', 'PRIVATE', 'WORK', 'PICKUP'])
-    .describe('Address type').optional(),
+    .describe('Address type')
+    .optional(),
 });
 
 const emailAddressesSchema = z.object({
@@ -69,6 +73,9 @@ const inputSchema = z.object({
         .optional(),
     })
     .optional(),
+  path: z.object({
+    customerId: z.string().describe('The unique id of the customer'),
+  }),
   query: z
     .object({
       environmentName: z
@@ -112,16 +119,18 @@ const inputSchema = z.object({
       projectId: z.string().optional().describe('The id of the project'),
       vatId: z.string().optional().describe('The VAT ID of the customer'),
     })
-    .describe('The data of the customer you want to create ').default({}),
+    .describe('The data of the customer you want to create ')
+    .default({}),
 });
 
 export const apiTool = {
-  name: 'createCustomer',
-  description: 'Create a customer',
+  name: 'putCustomer',
+  description:
+    'Update a customer with the PUT command. This means you replace the whole customer object with a new one',
   input: inputSchema,
-  run: async ({ headers, query, body }: z.infer<typeof inputSchema>) => {
+  run: async ({ headers, path, query, body }: z.infer<typeof inputSchema>) => {
     const url = new URL(
-      `https://unified-backend-prod.azurewebsites.net/accounting/customers`
+      `https://unified-backend-prod.azurewebsites.net/accounting/customers/${path.customerId}`
     );
     if (query?.environmentName)
       url.searchParams.append('environmentName', query.environmentName);
@@ -131,7 +140,7 @@ export const apiTool = {
 
     try {
       const response = await fetch(url.toString(), {
-        method: 'POST',
+        method: 'PUT',
         headers: {
           'X-API-KEY': apiKey,
           'X-ACCOUNT-KEY': accountKey,

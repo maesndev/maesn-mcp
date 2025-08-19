@@ -9,9 +9,16 @@ export const toolPaths = [
 
   './tools/bills/getBills.js',
   './tools/bills/getBill.js',
+  './tools/bills/createBill.js',
+  './tools/bills/putBill.js',
+
+  './tools/bookingProposals/createBookingProposal.js',
 
   './tools/contacts/getContacts.js',
   './tools/contacts/getContact.js',
+  './tools/contacts/createContact.js',
+  './tools/contacts/putContact.js',
+  './tools/contacts/patchContact.js',
 
   './tools/customers/getCustomers.js',
   './tools/customers/getCustomer.js',
@@ -30,31 +37,40 @@ export const toolPaths = [
 
   './tools/invoices/getInvoices.js',
   './tools/invoices/getInvoice.js',
+  './tools/invoices/createInvoice.js',
+  './tools/invoices/patchInvoice.js',
 
   './tools/items/getItems.js',
   './tools/items/getItem.js',
+  './tools/items/createItem.js',
+  './tools/items/patchItem.js',
 
   './tools/journalEntries/getJournalEntries.js',
   './tools/journalEntries/getJournalEntry.js',
+  './tools/journalEntries/createJournalEntry.js',
 
   './tools/journals/getJournals.js',
 
   './tools/offers/getOffers.js',
   './tools/offers/getOffer.js',
+  './tools/offers/createOffer.js',
 
   './tools/payments/getPayments.js',
   './tools/payments/getPayment.js',
+  './tools/payments/createPayment.js',
 
   './tools/paymentTerms/getPaymentTerms.js',
   './tools/paymentTerms/getPaymentTerm.js',
 
   './tools/projects/getProjects.js',
+  './tools/projects/createProject.js',
 
   './tools/purchaseOrders/getPurchaseOrders.js',
   './tools/purchaseOrders/getPurchaseOrder.js',
 
   './tools/salesOrders/getSalesOrders.js',
   './tools/salesOrders/getSalesOrder.js',
+  './tools/salesOrders/createSalesOrder.js',
 
   './tools/suppliers/getSuppliers.js',
   './tools/suppliers/getSupplier.js',
@@ -71,4 +87,6 @@ export const toolPaths = [
 
   './tools/vendorCredits/getVendorCredits.js',
   './tools/vendorCredits/getVendorCredit.js',
+  './tools/vendorCredits/createVendorCredit.js',
+  './tools/vendorCredits/putVendorCredit.js',
 ];

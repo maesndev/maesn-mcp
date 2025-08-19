@@ -99,15 +99,17 @@ export const apiTool = {
 
     const { apiKey, accountKey } = checkStoredHeaders(headers);
 
+    const formData = new FormData();
+    formData.append('expense', JSON.stringify(body));
+
     try {
       const response = await fetch(url.toString(), {
         method: 'POST',
         headers: {
           'X-API-KEY': apiKey,
           'X-ACCOUNT-KEY': accountKey,
-          'Content-Type': 'application/json',
         },
-        body: JSON.stringify(body),
+        body: formData,
       });
 
       if (!response.ok) {

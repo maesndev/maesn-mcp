@@ -117,7 +117,7 @@ const inputSchema = z.object({
       projectId: z.string().optional().describe('The id of the project'),
       vatId: z.string().optional().describe('The VAT ID of the customer'),
     })
-    .describe('The data of the customer you want to create ').default({}),
+    .describe('The new data you want to update the customer with').default({}),
 });
 
 export const apiTool = {

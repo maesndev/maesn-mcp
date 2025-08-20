@@ -117,7 +117,7 @@ const inputSchema = z.object({
       projectId: z.string().optional().describe('The id of the project'),
       vatId: z.string().optional().describe('The VAT ID of the supplier'),
     })
-    .describe('The data of the supplier you want to create ').default({}),
+    .describe('The data you want to update the supplier with').default({}),
 });
 
 export const apiTool = {

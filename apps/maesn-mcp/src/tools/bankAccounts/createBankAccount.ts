@@ -10,10 +10,10 @@ const inputSchema = z.object({
           'Your maesn X-API-KEY. This field is optional if you have stored your credentials in the .env file.'
         )
         .optional(),
-      bankAccountKey: z
+      accountKey: z
         .string()
         .describe(
-          'Your maesn X-bankAccount-KEY. This field is optional if you have stored your credentials in the .env file.'
+          'Your maesn X-ACCOUNT-KEY. This field is optional if you have stored your credentials in the .env file.'
         )
         .optional(),
     })
@@ -32,29 +32,32 @@ const inputSchema = z.object({
     .optional(),
   body: z
     .object({
-      balance: z.number().describe('The balance of the bankAccount').optional(),
+      balance: z
+        .number()
+        .describe('The balance of the bank account')
+        .optional(),
       bankName: z.string().describe('The name of the bank').optional(),
       bic: z.string().describe('The bic of the bank account').optional(),
-      currency: z.string().describe('The currency of the bankAccount').optional(),
+      currency: z
+        .string()
+        .describe('The currency of the bank account')
+        .optional(),
       description: z
         .string()
-        .describe('A short description of the bankAccount')
+        .describe('A short description of the bank account')
         .optional(),
       fileType: z.string().describe('The type of file support').optional(),
       iban: z.string().describe('The iban of the bank account').optional(),
       name: z.string().describe('The name of the bank account').optional(),
       number: z.string().describe('The bank account number').optional(),
-      system: z
-        .string()
-        .describe('The system of the bank account')
-        .optional(),
+      system: z.string().describe('The system of the bank account').optional(),
       status: z
         .enum(['ACTIVE', 'ARCHIVED'])
         .describe('The status of the bank account')
         .optional(),
-      type: z.string().describe('The type of bankAccount').optional(),
+      type: z.string().describe('The type of bank account').optional(),
     })
-    .describe('The data of the bankAccount you want to create ')
+    .describe('The data of the bank account you want to create ')
     .default({}),
 });
 
@@ -71,8 +74,6 @@ export const apiTool = {
     if (query?.companyId) url.searchParams.append('companyId', query.companyId);
 
     const { apiKey, accountKey } = checkStoredHeaders(headers);
-
-    console.error(body);
 
     try {
       const response = await fetch(url.toString(), {

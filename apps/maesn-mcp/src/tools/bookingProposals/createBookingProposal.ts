@@ -13,8 +13,8 @@ const lineItemSchema = z.object({
   accountNumber: z.number().describe("Account number associated with this line item").optional(),
   bookingTaxCode: z.string().describe("Tax code applied during booking for this line item").optional(),
   description: z.string().describe("Description of the booked product or service").optional(),
-  dimension1: z.string().describe("First dimension such as department or category").optional(),
-  dimension2: z.string().describe("Second dimension such as project or service type").optional(),
+  dimension1: z.string().describe("Primary dimension associated with the line item").optional(),
+  dimension2: z.string().describe("Secondary dimension associated with the line item").optional(),
   discountAmount: z.number().describe("Primary discount amount applied to the line item").optional(),
   discountAmount2: z.number().describe("Secondary discount amount applied to the line item").optional(),
   discountPercentage: z.number().describe("Primary discount percentage applied to the line item").optional(),
@@ -60,7 +60,7 @@ const inputSchema = z.object({
       addresses: z.array(addressSchema).default([]).describe("List of addresses associated with the booking proposal").optional(),
       bankAccountId: z.string().describe("Identifier of the related bank account").optional(),
       bankAccountNumber: z.number().describe("Bank account number of the associated account").optional(),
-      bankCode: z.string().describe("Bank code such as BLZ").optional(),
+      bankCode: z.string().describe("Bank code").optional(),
       bic: z.string().describe("Bank Identifier Code (BIC/SWIFT)").optional(),
       bookingProposalDate: z.string().describe("Date when the booking proposal was created").optional(),
       contactAccountNumber: z.number().describe("Account number of the contact associated with the proposal").optional(),
@@ -84,7 +84,7 @@ const inputSchema = z.object({
       totalGrossAmount: z.number().describe("Total gross amount including taxes for the booking proposal").optional(),
       vatId: z.string().describe("VAT identifier of the associated entity").optional(),
     })
-    .describe('The data of the bookingProposal you want to create ').default({}),
+    .describe('The data of the booking proposal you want to create ').default({}),
 });
 
 export const apiTool = {
@@ -110,7 +110,6 @@ export const apiTool = {
         headers: {
           'X-API-KEY': apiKey,
           'X-ACCOUNT-KEY': accountKey,
-          'Content-Type': 'application/json',
         },
         body: formData,
       });

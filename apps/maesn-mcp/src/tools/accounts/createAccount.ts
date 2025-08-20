@@ -51,9 +51,9 @@ const inputSchema = z.object({
         .optional(),
       status: z
         .enum(['ACTIVE', 'ARCHIVED'])
-        .describe('The status of the bank account')
+        .describe('The status of the account')
         .optional(),
-      type: z.string().describe('The type of bank account').optional(),
+      type: z.string().describe('The type of account').optional(),
     })
     .describe('The data of the account you want to create ')
     .default({}),

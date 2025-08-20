@@ -8,7 +8,7 @@ const addressSchema = z.object({
   city: z.string().describe("Name of the city for the address").optional(),
   countryCode: z.string().describe("Two-letter country code in ISO 3166-1 alpha-2 format").optional(),
   postalCode: z.string().describe("Postal or ZIP code of the address").optional(),
-  type: z.enum(["BILLING"]).describe("Specifies whether the address is used for billing").optional(),
+  type: z.enum(["BILLING", "DELIVERY", "SELLING"]).describe("Specifies whether the address is used for billing").optional(),
 });
 
 const lineItemSchema = z.object({
@@ -71,14 +71,14 @@ const inputSchema = z.object({
       orderDate: z.string().describe("Date when the order was created in ISO 8601 format").optional(),
       projectId: z.string().describe("Identifier of the project linked to this sales order").optional(),
       shippingContactId: z.string().describe("Identifier of the contact used for shipping").optional(),
-      status: z.string().describe("Current processing status of the sales order").optional(),
+      status: z.enum(['OPEN', 'CLOSED']).describe("Current processing status of the sales order").optional(),
       totalDiscountAmount: z.number().describe("Overall discount amount applied to the entire order").optional(),
       totalDiscountPercentage: z.number().describe("Overall discount percentage applied to the order").optional(),
       totalGrossAmount: z.number().describe("Total gross amount including taxes for the order").optional(),
       totalNetAmount: z.number().describe("Total net amount excluding taxes for the order").optional(),
       totalTaxAmount: z.number().describe("Total amount of taxes applied to the order").optional(),
     })
-    .describe('The data of the salesOrder you want to create ').default({}),
+    .describe('The data of the sales order you want to create ').default({}),
 });
 
 export const apiTool = {

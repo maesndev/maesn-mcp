@@ -17,6 +17,7 @@ const journalLineItemSchema = z.object({
   accountId: z.string().describe("Identifier of the account linked to the journal line").optional(),
   currency: z.string().describe("Currency code (ISO 4217) used for the journal line").optional(),
   customerId: z.string().describe("Identifier of the customer related to this journal line").optional(),
+  debitCreditIndicator: z.enum(['CREDIT', 'DEBIT']).describe("Indicates it the account is a credit or a debit account").optional(),
   description: z.string().describe("Description or memo for the journal line").optional(),
   dimensions: z.array(dimensionSchema).default([]).describe("List of dimensions associated with this journal line").optional(),
   documentNumber: z.string().describe("Document number related to this journal line").optional(),

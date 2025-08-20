@@ -12,6 +12,15 @@ const addressSchema = z.object({
     .describe('Address type').optional(),
 });
 
+const bankAccountSchema = z.object({
+  bic: z.string().describe("Bank Identifier Code (BIC/SWIFT)").optional(),
+  holder: z.string().describe("Name of the account holder").optional(),
+  iban: z.string().describe("International Bank Account Number (IBAN)").optional(),
+  isMainAccount: z.boolean().describe("Indicates if this is the primary bank account").optional(),
+  name: z.string().describe("Name of the bank or account").optional(),
+  sepa: z.boolean().describe("Indicates if SEPA payments are supported").optional(),
+});
+
 const emailAddressesSchema = z.object({
   email: z.string().email().describe('The email address'),
   type: z
@@ -87,6 +96,7 @@ const inputSchema = z.object({
         .array(addressSchema)
         .default([])
         .describe('List of addresses associated with the supplier'),
+      bankAccount: bankAccountSchema.describe("Bank account details associated with the supplier").optional(),
       companyName: z.string().describe('The name of the company').optional(),
       contactType: z
         .enum(['CONTACT_PERSON', 'COMPANY'])

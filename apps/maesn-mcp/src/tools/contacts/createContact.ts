@@ -5,11 +5,24 @@ const addressSchema = z.object({
   addressLine1: z.string().describe('Street name and number').optional(),
   addressLine2: z.string().describe('Street name and number').optional(),
   city: z.string().describe('City name').optional(),
-  countryCode: z.string().describe('Country code in ISO 3166-1 alpha-2 format').optional(),
+  countryCode: z
+    .string()
+    .describe('Country code in ISO 3166-1 alpha-2 format')
+    .optional(),
   postalCode: z.string().describe('Postal code').optional(),
   type: z
     .enum(['BILLING', 'DELIVERY', 'EMPTY', 'PRIVATE', 'WORK', 'PICKUP'])
-    .describe('Address type').optional(),
+    .describe('Address type')
+    .optional(),
+});
+
+const bankAccountSchema = z.object({
+  bic: z.string().describe("Bank Identifier Code (BIC/SWIFT)").optional(),
+  holder: z.string().describe("Name of the account holder").optional(),
+  iban: z.string().describe("International Bank Account Number (IBAN)").optional(),
+  isMainAccount: z.boolean().describe("Indicates if this is the primary bank account").optional(),
+  name: z.string().describe("Name of the bank or account").optional(),
+  sepa: z.boolean().describe("Indicates if SEPA payments are supported").optional(),
 });
 
 const emailAddressesSchema = z.object({
@@ -87,6 +100,7 @@ const inputSchema = z.object({
         .array(addressSchema)
         .default([])
         .describe('List of addresses associated with the contact'),
+      bankAccount: bankAccountSchema.describe("Bank account details associated with the contact").optional(),
       companyName: z.string().describe('The name of the company').optional(),
       contactType: z
         .enum(['CONTACT_PERSON', 'COMPANY'])
@@ -112,7 +126,8 @@ const inputSchema = z.object({
       projectId: z.string().optional().describe('The id of the project'),
       vatId: z.string().optional().describe('The VAT ID of the contact'),
     })
-    .describe('The data of the contact you want to create ').default({}),
+    .describe('The data of the contact you want to create ')
+    .default({}),
 });
 
 export const apiTool = {

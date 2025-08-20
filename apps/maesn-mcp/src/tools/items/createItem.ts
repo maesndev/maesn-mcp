@@ -42,7 +42,7 @@ const inputSchema = z.object({
       stockCount: z.number().describe("Current quantity of the item in stock").optional(),
       taxCode: z.string().describe("Tax code applied to the item for accounting purposes").optional(),
       taxRatePercentage: z.number().describe("Tax rate percentage that applies to this item").optional(),
-      type: z.string().describe("Type of item, such as PRODUCT or SERVICE").optional(),
+      type: z.enum(['PRODUCT', 'SERVICE']).describe("Type of item").optional(),
       unitName: z.string().describe("Unit of measurement for the item, e.g., PIECE, HOUR, or KG").optional(),
       unitPurchasePrice: z.number().describe("Purchase price per unit of the item").optional(),
       unitSalesPrice: z.number().describe("Sales price per unit of the item").optional(),

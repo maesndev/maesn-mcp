@@ -38,7 +38,7 @@ const inputSchema = z.object({
       description: z.string().describe("Detailed description or notes about the project").optional(),
       endDate: z.string().describe("Planned or actual project end date in ISO 8601 format").optional(),
       name: z.string().describe("Official name or title of the project").optional(),
-      status: z.string().describe("Current project status such as ACTIVE or CLOSED").optional(),
+      status: z.enum(['ACTIVE', 'CLOSED']).describe("Current project status such as ACTIVE or CLOSED").optional(),
       startDate: z.string().describe("Planned or actual project start date in ISO 8601 format").optional(),
     })
     .describe('The data of the project you want to create ').default({}),

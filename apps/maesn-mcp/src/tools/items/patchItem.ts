@@ -52,7 +52,7 @@ const inputSchema = z.object({
       unitPurchasePrice: z.number().describe("Purchase price per unit of the item").optional(),
       unitSalesPrice: z.number().describe("Sales price per unit of the item").optional(),
     })
-    .describe('The data of the item you want to create ').default({}),
+    .describe('The data you want to update the item with').default({}),
 });
 
 export const apiTool = {

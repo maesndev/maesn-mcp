@@ -12,15 +12,6 @@ const addressSchema = z.object({
     .describe('Address type').optional(),
 });
 
-const bankAccountSchema = z.object({
-  bic: z.string().describe("Bank Identifier Code (BIC/SWIFT)").optional(),
-  holder: z.string().describe("Name of the account holder").optional(),
-  iban: z.string().describe("International Bank Account Number (IBAN)").optional(),
-  isMainAccount: z.boolean().describe("Indicates if this is the primary bank account").optional(),
-  name: z.string().describe("Name of the bank or account").optional(),
-  sepa: z.boolean().describe("Indicates if SEPA payments are supported").optional(),
-});
-
 const emailAddressesSchema = z.object({
   email: z.string().email().describe('The email address'),
   type: z
@@ -78,6 +69,11 @@ const inputSchema = z.object({
         .optional(),
     })
     .optional(),
+  path: z.object({
+    customerId: z
+      .string()
+      .describe('The unique id of the customer'),
+  }),
   query: z
     .object({
       environmentName: z
@@ -96,7 +92,6 @@ const inputSchema = z.object({
         .array(addressSchema)
         .default([])
         .describe('List of addresses associated with the customer'),
-      bankAccount: bankAccountSchema.describe("Bank account details associated with the customer").optional(),
       companyName: z.string().describe('The name of the company').optional(),
       contactType: z
         .enum(['CONTACT_PERSON', 'COMPANY'])
@@ -122,16 +117,16 @@ const inputSchema = z.object({
       projectId: z.string().optional().describe('The id of the project'),
       vatId: z.string().optional().describe('The VAT ID of the customer'),
     })
-    .describe('The data of the customer you want to create ').default({}),
+    .describe('The new data you want to update the customer with').default({}),
 });
 
 export const apiTool = {
-  name: 'createCustomer',
-  description: 'Create a customer',
+  name: 'patchCustomer',
+  description: 'Update a customer with the PATCH command. This means you can replace one specific field or more, leaving the other fields as is.',
   input: inputSchema,
-  run: async ({ headers, query, body }: z.infer<typeof inputSchema>) => {
+  run: async ({ headers, path, query, body }: z.infer<typeof inputSchema>) => {
     const url = new URL(
-      `https://unified-backend-prod.azurewebsites.net/accounting/customers`
+      `https://unified-backend-prod.azurewebsites.net/accounting/customers/${path.customerId}`
     );
     if (query?.environmentName)
       url.searchParams.append('environmentName', query.environmentName);
@@ -139,9 +134,10 @@ export const apiTool = {
 
     const { apiKey, accountKey } = checkStoredHeaders(headers);
 
+
     try {
       const response = await fetch(url.toString(), {
-        method: 'POST',
+        method: 'PATCH',
         headers: {
           'X-API-KEY': apiKey,
           'X-ACCOUNT-KEY': accountKey,

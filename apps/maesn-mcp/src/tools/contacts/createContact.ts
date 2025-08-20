@@ -5,11 +5,15 @@ const addressSchema = z.object({
   addressLine1: z.string().describe('Street name and number').optional(),
   addressLine2: z.string().describe('Street name and number').optional(),
   city: z.string().describe('City name').optional(),
-  countryCode: z.string().describe('Country code in ISO 3166-1 alpha-2 format').optional(),
+  countryCode: z
+    .string()
+    .describe('Country code in ISO 3166-1 alpha-2 format')
+    .optional(),
   postalCode: z.string().describe('Postal code').optional(),
   type: z
     .enum(['BILLING', 'DELIVERY', 'EMPTY', 'PRIVATE', 'WORK', 'PICKUP'])
-    .describe('Address type').optional(),
+    .describe('Address type')
+    .optional(),
 });
 
 const bankAccountSchema = z.object({
@@ -95,8 +99,8 @@ const inputSchema = z.object({
       addresses: z
         .array(addressSchema)
         .default([])
-        .describe('List of addresses associated with the customer'),
-      bankAccount: bankAccountSchema.describe("Bank account details associated with the customer").optional(),
+        .describe('List of addresses associated with the contact'),
+      bankAccount: bankAccountSchema.describe("Bank account details associated with the contact").optional(),
       companyName: z.string().describe('The name of the company').optional(),
       contactType: z
         .enum(['CONTACT_PERSON', 'COMPANY'])
@@ -105,33 +109,34 @@ const inputSchema = z.object({
       contactPersons: z
         .array(contactPersonSchema)
         .default([])
-        .describe('List of contact persons associated with the customer'),
+        .describe('List of contact persons associated with the contact'),
       documentId: z
         .string()
         .optional()
-        .describe('The document id of the customer'),
+        .describe('The document id of the contact'),
       emailAddresses: z
         .array(emailAddressesSchema)
         .default([])
-        .describe('List of email addresses associated with the customer'),
-      number: z.string().optional().describe('The customer number'),
+        .describe('List of email addresses associated with the contact'),
+      number: z.string().optional().describe('The contact number'),
       phoneNumbers: z
         .array(phoneNumbersSchema)
         .default([])
-        .describe('List of phone numbers associated with the customer'),
+        .describe('List of phone numbers associated with the contact'),
       projectId: z.string().optional().describe('The id of the project'),
-      vatId: z.string().optional().describe('The VAT ID of the customer'),
+      vatId: z.string().optional().describe('The VAT ID of the contact'),
     })
-    .describe('The data of the customer you want to create ').default({}),
+    .describe('The data of the contact you want to create ')
+    .default({}),
 });
 
 export const apiTool = {
-  name: 'createCustomer',
-  description: 'Create a customer',
+  name: 'createContact',
+  description: 'Create a contact',
   input: inputSchema,
   run: async ({ headers, query, body }: z.infer<typeof inputSchema>) => {
     const url = new URL(
-      `https://unified-backend-prod.azurewebsites.net/accounting/customers`
+      `https://unified-backend-prod.azurewebsites.net/accounting/contacts`
     );
     if (query?.environmentName)
       url.searchParams.append('environmentName', query.environmentName);
@@ -158,20 +163,20 @@ export const apiTool = {
 
       const data = await response.json();
 
-      const customer = data.data;
+      const contact = data.data;
       const mapped = {
-        id: customer.id,
-        addresses: customer.addresses,
-        companyName: customer.companyName,
-        contactType: customer.contactType,
-        contactPersons: customer.contactPersons,
-        documentId: customer.documentId,
-        emailAddresses: customer.emailAddresses,
-        number: customer.number,
-        phoneNumbers: customer.phoneNumbers,
-        projectId: customer.projectId,
-        updatedDate: customer.updatedDate,
-        vatId: customer.vatId,
+        id: contact.id,
+        addresses: contact.addresses,
+        companyName: contact.companyName,
+        contactType: contact.contactType,
+        contactPersons: contact.contactPersons,
+        documentId: contact.documentId,
+        emailAddresses: contact.emailAddresses,
+        number: contact.number,
+        phoneNumbers: contact.phoneNumbers,
+        projectId: contact.projectId,
+        updatedDate: contact.updatedDate,
+        vatId: contact.vatId,
       };
 
       return {

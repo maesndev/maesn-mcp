@@ -95,8 +95,8 @@ const inputSchema = z.object({
       addresses: z
         .array(addressSchema)
         .default([])
-        .describe('List of addresses associated with the customer'),
-      bankAccount: bankAccountSchema.describe("Bank account details associated with the customer").optional(),
+        .describe('List of addresses associated with the supplier'),
+      bankAccount: bankAccountSchema.describe("Bank account details associated with the supplier").optional(),
       companyName: z.string().describe('The name of the company').optional(),
       contactType: z
         .enum(['CONTACT_PERSON', 'COMPANY'])
@@ -105,33 +105,33 @@ const inputSchema = z.object({
       contactPersons: z
         .array(contactPersonSchema)
         .default([])
-        .describe('List of contact persons associated with the customer'),
+        .describe('List of contact persons associated with the supplier'),
       documentId: z
         .string()
         .optional()
-        .describe('The document id of the customer'),
+        .describe('The document id of the supplier'),
       emailAddresses: z
         .array(emailAddressesSchema)
         .default([])
-        .describe('List of email addresses associated with the customer'),
-      number: z.string().optional().describe('The customer number'),
+        .describe('List of email addresses associated with the supplier'),
+      number: z.string().optional().describe('The supplier number'),
       phoneNumbers: z
         .array(phoneNumbersSchema)
         .default([])
-        .describe('List of phone numbers associated with the customer'),
+        .describe('List of phone numbers associated with the supplier'),
       projectId: z.string().optional().describe('The id of the project'),
-      vatId: z.string().optional().describe('The VAT ID of the customer'),
+      vatId: z.string().optional().describe('The VAT ID of the supplier'),
     })
-    .describe('The data of the customer you want to create ').default({}),
+    .describe('The data of the supplier you want to create ').default({}),
 });
 
 export const apiTool = {
-  name: 'createCustomer',
-  description: 'Create a customer',
+  name: 'createSupplier',
+  description: 'Create a supplier',
   input: inputSchema,
   run: async ({ headers, query, body }: z.infer<typeof inputSchema>) => {
     const url = new URL(
-      `https://unified-backend-prod.azurewebsites.net/accounting/customers`
+      `https://unified-backend-prod.azurewebsites.net/accounting/suppliers`
     );
     if (query?.environmentName)
       url.searchParams.append('environmentName', query.environmentName);
@@ -158,20 +158,20 @@ export const apiTool = {
 
       const data = await response.json();
 
-      const customer = data.data;
+      const supplier = data.data;
       const mapped = {
-        id: customer.id,
-        addresses: customer.addresses,
-        companyName: customer.companyName,
-        contactType: customer.contactType,
-        contactPersons: customer.contactPersons,
-        documentId: customer.documentId,
-        emailAddresses: customer.emailAddresses,
-        number: customer.number,
-        phoneNumbers: customer.phoneNumbers,
-        projectId: customer.projectId,
-        updatedDate: customer.updatedDate,
-        vatId: customer.vatId,
+        id: supplier.id,
+        addresses: supplier.addresses,
+        companyName: supplier.companyName,
+        contactType: supplier.contactType,
+        contactPersons: supplier.contactPersons,
+        documentId: supplier.documentId,
+        emailAddresses: supplier.emailAddresses,
+        number: supplier.number,
+        phoneNumbers: supplier.phoneNumbers,
+        projectId: supplier.projectId,
+        updatedDate: supplier.updatedDate,
+        vatId: supplier.vatId,
       };
 
       return {

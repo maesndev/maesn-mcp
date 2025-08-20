@@ -73,8 +73,6 @@ export const apiTool = {
 
     const { apiKey, accountKey } = checkStoredHeaders(headers);
 
-    console.error(body);
-
     try {
       const response = await fetch(url.toString(), {
         method: 'POST',

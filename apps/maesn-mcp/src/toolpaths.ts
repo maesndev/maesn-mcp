@@ -3,6 +3,8 @@ export const toolPaths = [
   './tools/accounts/getAccount.js',
   './tools/accounts/createAccount.js',
 
+  './tools/asyncTask/getAsyncTasks.js',
+
   './tools/bankAccounts/getBankAccounts.js',
   './tools/bankAccounts/getBankAccount.js',
   './tools/bankAccounts/createBankAccount.js',
@@ -11,6 +13,7 @@ export const toolPaths = [
   './tools/bills/getBill.js',
   './tools/bills/createBill.js',
   './tools/bills/putBill.js',
+  './tools/bills/deleteBill.js',
 
   './tools/bookingProposals/createBookingProposal.js',
 
@@ -48,6 +51,7 @@ export const toolPaths = [
   './tools/journalEntries/getJournalEntries.js',
   './tools/journalEntries/getJournalEntry.js',
   './tools/journalEntries/createJournalEntry.js',
+  './tools/journalEntries/createJournalEntriesBulk.js',
 
   './tools/journals/getJournals.js',
 
@@ -58,6 +62,7 @@ export const toolPaths = [
   './tools/payments/getPayments.js',
   './tools/payments/getPayment.js',
   './tools/payments/createPayment.js',
+  './tools/payments/deletePayment.js',
 
   './tools/paymentTerms/getPaymentTerms.js',
   './tools/paymentTerms/getPaymentTerm.js',
@@ -89,4 +94,5 @@ export const toolPaths = [
   './tools/vendorCredits/getVendorCredit.js',
   './tools/vendorCredits/createVendorCredit.js',
   './tools/vendorCredits/putVendorCredit.js',
+  './tools/vendorCredits/deleteVendorCredit.js',
 ];

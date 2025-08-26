@@ -104,16 +104,36 @@ Then start the dev server:
 npx nx serve maesn-mcp
 ```
 
-## Available Tools
+## Available Resources
 
-The following tools are currently implemented:
+The MCP server is still under development, but most resources supported in the Unified API are already fully available through our MCP.
+Below is the list of currently supported resources:
 
-- Retrieve all or a specific customer
--  Retrieve all or a specific invoice 
--  Retrieve all or a specific bill 
--  Retrieve all or a specific account
+- Accounts
+- Async tasks
+- Bills
+- Booking proposals
+- Contacts
+- Customers
+- Dimensions
+- Expenses
+- Goods receipts
+- Invoices
+- Items
+- Journal entries
+- Journals
+- Offers
+- Payments
+- Payment terms
+- Projects
+- Purchase orders
+- Sales orders
+- Suppliers
+- Tax rates
+- Units
+- Vendor credits
 
-Additional tools will be added incrementally.
+⚠️ Note: File support is not yet available. Additional resources and tools will be added incrementally.
 
 ## 📬 Contact Us
 

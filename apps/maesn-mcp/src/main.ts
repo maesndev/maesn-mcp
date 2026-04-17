@@ -37,17 +37,6 @@ async function loadTools() {
 async function main() {
   const tools = await loadTools();
 
-  console.error('API KEY: ', process.env.API_KEY);
-  console.error('ACCOUNT KEY: ', process.env.ACCOUNT_KEY);
-
-  config({ path: resolve(__dirname, '../.env'), quiet: true });
-
-  process.stderr.write('CWD: ' + process.cwd() + '\n');
-  process.stderr.write('__dirname: ' + __dirname + '\n');
-  process.stderr.write('env path: ' + resolve(__dirname, '../.env') + '\n');
-
-
-
   // Define all tools for the server
   server.setRequestHandler(ListToolsRequestSchema, async () => ({
     tools: tools.map((tool) => ({

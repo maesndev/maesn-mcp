@@ -1,23 +1,17 @@
 function checkStoredApiKey(headers: any) {
-  let apiKey = headers.apiKey ?? "";
-  if (!process.env.API_KEY && !headers.apiKey) {
+  const fromHeader = headers?.apiKey;
+  if (!process.env.API_KEY && !fromHeader) {
     process.stderr.write('API key is missing.');
   }
-  if (process.env.API_KEY && !headers.apiKey) {
-    apiKey = process.env.API_KEY;
-  }
-  return apiKey;
+  return fromHeader ?? process.env.API_KEY ?? '';
 }
 
 function checkStoredAccountKey(headers: any) {
-  let accountKey = headers.accountKey ?? "";
-  if (!process.env.ACCOUNT_KEY && !headers.accountKey) {
+  const fromHeader = headers?.accountKey;
+  if (!process.env.ACCOUNT_KEY && !fromHeader) {
     process.stderr.write('Account key is missing.');
   }
-  if (process.env.ACCOUNT_KEY && !headers.accountKey) {
-    accountKey = process.env.ACCOUNT_KEY;
-  }
-  return accountKey;
+  return fromHeader ?? process.env.ACCOUNT_KEY ?? '';
 }
 
 export function checkStoredHeaders(headers: any) {

@@ -65,31 +65,23 @@ To connect your Maesn MCP server to an MCP-compatible environment (like [Claude 
 
 
 ### Environment Variable Configuration
-You can configure your Maesn API credentials using environment variables.
-When set, these values are automatically used by the agent, so you do not need to pass them manually each time.
 
-You can still override the environment values at runtime by instructing your LLM to use a different API key or account key. This is useful if you want to switch between credentials quickly.
+Create a `.env` file in the project root with your credentials:
 
-```json
-{
-  "mcpServers": {
-    "maesn-mcp": {
-      "command": "node",
-      "args": [
-        "<ABSOLUTE_PATH>/apps/maesn-mcp/dist/main.js"
-      ],
-      "env": {
-        "API_KEY": "your_maesn_api_key",
-        "ACCOUNT_KEY": "your_maesn_account_key"
-      }
-    }
-  }
-}
+**Setup:**
+
+1. Create your `.env` from the example:
 ```
-⚠️ Important: On Windows, Claude Desktop may fail to inject environment variables correctly. If this happens, skip the environment configuration and provide the API key and account key directly  in your request to Claude.
+cp .env.example .env
+```
 
----
+2. Fill in your credentials:
+```
+API_KEY=your_maesn_api_key
+ACCOUNT_KEY=your_maesn_account_key
+```
 
+> ⚠️ Claude Desktop has a known bug where `env` variables in `claude_desktop_config.json` are not reliably injected — this is why the `.env` approach is used. If you are using a different MCP-compatible client that correctly injects environment variables, you may pass them natively instead.
 
 ## 🛠 Run Locally
 

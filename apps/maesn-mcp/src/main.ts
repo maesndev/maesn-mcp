@@ -7,6 +7,10 @@ import {
 import { zodToJsonSchema } from 'zod-to-json-schema';
 import { toolPaths } from './toolpaths.js';
 
+import { config } from 'dotenv';
+import { resolve } from 'path';
+
+config({ path: resolve(__dirname, '../../../../../../.env'), quiet: true });
 const server = new Server(
   {
     name: 'maesn-mcp',

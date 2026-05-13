@@ -6,7 +6,7 @@
   "private": true,
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.16.0",
-    "axios": "^1.6.0",
+    "axios": "^1.16.0",
     "dotenv": "^17.2.1",
     "express": "^4.21.2",
     "openapi-types": "^12.1.3",

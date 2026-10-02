@@ -108,6 +108,7 @@ Below is the list of currently supported resources:
 - Contacts
 - Customers
 - Dimensions
+- Document extensions
 - Expenses
 - Goods receipts
 - Invoices
@@ -122,6 +123,7 @@ Below is the list of currently supported resources:
 - Sales orders
 - Suppliers
 - Tax rates
+- Trial balance
 - Units
 - Vendor credits
 

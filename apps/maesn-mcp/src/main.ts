@@ -50,13 +50,23 @@ async function main() {
   server.setRequestHandler(CallToolRequestSchema, async (req) => {
     const toolName = req.params.name;
     const tool = tools.find((t) => t.name === toolName);
-    if (!tool) throw new Error(`Tool not found locally: ${toolName}`);
-    const args = req.params.arguments;
-    const parsed = tool.input.parse(args);
-    const result = await tool.run(parsed);
-    return {
-      content: [{ type: 'text', text: JSON.stringify(result, null, 2) }],
-    };
+    if (!tool) {
+      return {
+        isError: true,
+        content: [{ type: 'text', text: `Tool not found: ${toolName}` }],
+      };
+    }
+    const parsed = tool.input.safeParse(req.params.arguments ?? {});
+    if (!parsed.success) {
+      return {
+        isError: true,
+        content: [
+          { type: 'text', text: `Invalid arguments: ${parsed.error.message}` },
+        ],
+      };
+    }
+    // Tools already return an MCP result ({ content, isError? }), so pass it through as-is
+    return await tool.run(parsed.data);
   });
 
   const transport = new StdioServerTransport();

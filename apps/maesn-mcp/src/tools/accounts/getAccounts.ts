@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { checkStoredHeaders } from '../../commons';
+import { checkStoredHeaders, fetchErrorMessage, pageLimitSchema } from '../../commons';
 
 const inputSchema = z.object({
   headers: z.object({
@@ -10,10 +10,7 @@ const inputSchema = z.object({
     pagination: z
       .object({
         page: z.number().optional().describe('Page number'),
-        limit: z
-          .number()
-          .optional()
-          .describe('Number of entries per page you want returned'),
+        limit: pageLimitSchema.optional(),
       })
       .optional()
       .describe('Pagination options'),
@@ -37,13 +34,29 @@ const inputSchema = z.object({
       ),
     debitCreditIndicator: z.enum(['DEBIT', 'CREDIT']).optional().describe('Filter accounts based on if they are debit or credit'),
     fiscalYear: z.string().optional().describe('Filter accounts based on fiscal year'),
+    fiscalYearStartDate: z
+      .string()
+      .optional()
+      .describe('Start date of the fiscal year in ISO format (e.g. 2024-01-01). Required for DATEV Rechnungswesen'),
+    isActive: z
+      .boolean()
+      .optional()
+      .describe('true returns only active accounts, false only inactive ones. Supported by DATEV Rechnungswesen'),
+    types: z
+      .string()
+      .optional()
+      .describe('Comma-separated list of account types to filter by. Supported by Twinfield'),
+    classFilter: z
+      .string()
+      .optional()
+      .describe('Filter accounts by account class. Supported by Exact Online'),
 
   }).optional(),
 });
 
 export const apiTool = {
   name: 'getAccounts',
-  description: 'Get a list of accounts',
+  description: 'Get a list of accounts (chart of accounts). For DATEV Rechnungswesen, query.fiscalYearStartDate is required.',
   input: inputSchema,
   run: async ({ headers, query }: z.infer<typeof inputSchema>) => {
     const url = new URL(
@@ -64,6 +77,12 @@ export const apiTool = {
       url.searchParams.append('rawData', query.rawData.toString());
     if (query?.debitCreditIndicator) url.searchParams.append('debitCreditIndicator', query.debitCreditIndicator);
     if (query?.fiscalYear) url.searchParams.append('fiscalYear', query.fiscalYear);
+    if (query?.fiscalYearStartDate)
+      url.searchParams.append('fiscalYearStartDate', query.fiscalYearStartDate);
+    if (query?.isActive !== undefined)
+      url.searchParams.append('isActive', query.isActive.toString());
+    if (query?.types) url.searchParams.append('types', query.types);
+    if (query?.classFilter) url.searchParams.append('classFilter', query.classFilter);
 
     const {apiKey, accountKey} = checkStoredHeaders(headers);
 
@@ -77,10 +96,16 @@ export const apiTool = {
       });
 
       if (!response.ok) {
-        throw new Error(`Fetch failed with status ${response.status}`);
+        throw new Error(await fetchErrorMessage(response));
       }
 
       const data = await response.json();
+
+      if (query?.rawData) {
+        return {
+          content: [{ type: 'text', text: JSON.stringify(data.data, null, 2) }],
+        };
+      }
 
       const mapped = data.data.map((account: any) => ({
         id: account.id,
@@ -95,6 +120,7 @@ export const apiTool = {
         number: account.number,
         parentAccountId: account.parentAccountId,
         status: account.status,
+        taxRate: account.taxRate,
         type: account.type,
         updatedDate: account.updatedDate,
       }));

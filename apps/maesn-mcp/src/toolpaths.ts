@@ -35,6 +35,8 @@ export const toolPaths = [
   './tools/expenses/getExpense.js',
   './tools/expenses/createExpense.js',
 
+  './tools/files/getDocumentExtensions.js',
+
   './tools/goodsReceipts/getGoodsReceipts.js',
   './tools/goodsReceipts/getGoodsReceipt.js',
 
@@ -87,6 +89,8 @@ export const toolPaths = [
   './tools/taxRates/getTaxRate.js',
 
   './tools/transactions/createTransaction.js',
+
+  './tools/trialBalance/getTrialBalance.js',
 
   './tools/units/getUnits.js',
 

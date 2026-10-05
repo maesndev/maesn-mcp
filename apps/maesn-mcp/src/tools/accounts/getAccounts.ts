@@ -33,11 +33,10 @@ const inputSchema = z.object({
         'Set to true if you want to retrieve the raw data from the target system'
       ),
     debitCreditIndicator: z.enum(['DEBIT', 'CREDIT']).optional().describe('Filter accounts based on if they are debit or credit'),
-    fiscalYear: z.string().optional().describe('Filter accounts based on fiscal year'),
     fiscalYearStartDate: z
       .string()
       .optional()
-      .describe('Start date of the fiscal year in ISO format (e.g. 2024-01-01). Required for DATEV Rechnungswesen'),
+      .describe('Start date of the fiscal year in ISO format (e.g. 2024-01-01). Returns the accounts of the fiscal year starting on this date. Required for DATEV Rechnungswesen'),
     isActive: z
       .boolean()
       .optional()
@@ -76,7 +75,6 @@ export const apiTool = {
     if (query?.rawData)
       url.searchParams.append('rawData', query.rawData.toString());
     if (query?.debitCreditIndicator) url.searchParams.append('debitCreditIndicator', query.debitCreditIndicator);
-    if (query?.fiscalYear) url.searchParams.append('fiscalYear', query.fiscalYear);
     if (query?.fiscalYearStartDate)
       url.searchParams.append('fiscalYearStartDate', query.fiscalYearStartDate);
     if (query?.isActive !== undefined)

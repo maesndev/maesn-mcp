@@ -62,11 +62,10 @@ const inputSchema = z.object({
         .describe(
           'Set to true if you want to retrieve the raw data from the target system'
         ),
-      fiscalYear: z.string().optional().describe('Filter journal entries by fiscal year'),
       fiscalYearStartDate: z
         .string()
         .optional()
-        .describe('Start date of the fiscal year in ISO format (e.g. 2024-01-01). Required for DATEV Rechnungswesen'),
+        .describe('Start date of the fiscal year in ISO format (e.g. 2024-01-01). Returns the journal entries of the fiscal year starting on this date. Required for DATEV Rechnungswesen'),
       transactionDateFrom: z
         .string()
         .optional()
@@ -97,7 +96,6 @@ export const apiTool = {
     if (query?.companyId) url.searchParams.append('companyId', query.companyId);
     if (query?.rawData)
       url.searchParams.append('rawData', query.rawData.toString());
-    if (query?.fiscalYear) url.searchParams.append('fiscalYear', query.fiscalYear);
     if (query?.fiscalYearStartDate)
       url.searchParams.append('fiscalYearStartDate', query.fiscalYearStartDate);
     if (query?.transactionDateFrom)

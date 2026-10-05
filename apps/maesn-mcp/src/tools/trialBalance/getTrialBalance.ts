@@ -19,12 +19,8 @@ const inputSchema = z.object({
         .string()
         .optional()
         .describe(
-          'Start date of the fiscal year in ISO format (e.g. 2024-01-01). Required for DATEV Rechnungswesen and Sage Active'
+          'Start date of the fiscal year in ISO format (e.g. 2024-01-01). Returns the trial balance of the fiscal year starting on this date. Required for DATEV Rechnungswesen and Sage Active'
         ),
-      fiscalYear: z
-        .number()
-        .optional()
-        .describe('Fiscal year to scope the trial balance (e.g. 2024)'),
       accountNumber: z
         .string()
         .optional()
@@ -72,8 +68,6 @@ export const apiTool = {
     }
     if (query?.fiscalYearStartDate)
       url.searchParams.append('fiscalYearStartDate', query.fiscalYearStartDate);
-    if (query?.fiscalYear)
-      url.searchParams.append('fiscalYear', query.fiscalYear.toString());
     if (query?.accountNumber)
       url.searchParams.append('accountNumber', query.accountNumber);
     if (query?.accountCode)

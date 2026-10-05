@@ -46,7 +46,7 @@ export const apiTool = {
   input: inputSchema,
   run: async ({ headers, query }: z.infer<typeof inputSchema>) => {
     const url = new URL(
-      `https://unified-backend-prod.azurewebsites.net/accounting/taxRates`
+      `https://api.maesn.dev/accounting/taxRates`
     );
     if (query?.pagination) {
       if (query.pagination.page)

@@ -34,7 +34,7 @@ export const apiTool = {
   input: inputSchema,
   run: async ({ headers, path, query }: z.infer<typeof inputSchema>) => {
     const url = new URL(
-      `https://unified-backend-prod.azurewebsites.net/accounting/bankAccounts/${path.bankAccountId}`
+      `https://api.maesn.dev/accounting/bankAccounts/${path.bankAccountId}`
     );
     if (query?.environmentName)
       url.searchParams.append('environmentName', query.environmentName);

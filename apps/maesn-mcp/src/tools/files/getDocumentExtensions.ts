@@ -23,7 +23,7 @@ export const apiTool = {
   input: inputSchema,
   run: async ({ headers, query }: z.infer<typeof inputSchema>) => {
     const url = new URL(
-      `https://unified-backend-prod.azurewebsites.net/accounting/files/documentExtensions`
+      `https://api.maesn.dev/accounting/files/documentExtensions`
     );
     if (query?.companyId) url.searchParams.append('companyId', query.companyId);
 

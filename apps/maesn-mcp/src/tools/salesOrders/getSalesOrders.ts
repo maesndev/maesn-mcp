@@ -47,7 +47,7 @@ export const apiTool = {
   input: inputSchema,
   run: async ({ headers, query }: z.infer<typeof inputSchema>) => {
     const url = new URL(
-      `https://unified-backend-prod.azurewebsites.net/accounting/salesOrders`
+      `https://api.maesn.dev/accounting/salesOrders`
     );
     if (query?.pagination) {
       if (query.pagination.page)

@@ -67,7 +67,7 @@ export const apiTool = {
   input: inputSchema,
   run: async ({ headers, path, query, result }: z.infer<typeof inputSchema>) => {
     const url = new URL(
-      `https://unified-backend-prod.azurewebsites.net/accounting/asyncTask/${encodeURIComponent(path.asyncTaskId)}`
+      `https://api.maesn.dev/accounting/asyncTask/${encodeURIComponent(path.asyncTaskId)}`
     );
     if (query?.companyId) url.searchParams.append('companyId', query.companyId);
     if (query?.page) url.searchParams.append('page', query.page.toString());

@@ -1,5 +1,7 @@
 import { z } from 'zod';
 
+export const MAESN_API_BASE_URL = 'https://api.maesn.dev';
+
 function checkStoredApiKey(headers: any) {
   const fromHeader = headers?.apiKey;
   if (!process.env.API_KEY && !fromHeader) {

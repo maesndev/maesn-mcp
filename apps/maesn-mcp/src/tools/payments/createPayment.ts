@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { checkStoredHeaders } from '../../commons';
+import { checkStoredHeaders, MAESN_API_BASE_URL } from '../../commons';
 
 const paymentLineSchema = z.object({
   accountId: z.string().describe("Identifier of the account where the payment is recorded").optional(),
@@ -56,7 +56,7 @@ export const apiTool = {
   input: inputSchema,
   run: async ({ headers, query, body }: z.infer<typeof inputSchema>) => {
     const url = new URL(
-      `https://api.maesn.dev/accounting/payments`
+      `${MAESN_API_BASE_URL}/accounting/payments`
     );
     if (query?.environmentName)
       url.searchParams.append('environmentName', query.environmentName);

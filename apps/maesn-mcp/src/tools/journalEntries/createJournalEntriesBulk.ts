@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { checkStoredHeaders } from '../../commons';
+import { checkStoredHeaders, MAESN_API_BASE_URL } from '../../commons';
 
 const dimensionSchema = z.object({
   id: z.string().describe("Identifier of the dimension").optional(),
@@ -86,7 +86,7 @@ export const apiTool = {
   input: inputSchema,
   run: async ({ headers, query, body }: z.infer<typeof inputSchema>) => {
     const url = new URL(
-      `https://api.maesn.dev/accounting/journalEntries/bulk`
+      `${MAESN_API_BASE_URL}/accounting/journalEntries/bulk`
     );
 
     if (query?.companyId) url.searchParams.append('companyId', query.companyId);

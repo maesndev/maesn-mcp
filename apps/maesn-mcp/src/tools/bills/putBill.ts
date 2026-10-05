@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { checkStoredHeaders } from '../../commons';
+import { checkStoredHeaders, MAESN_API_BASE_URL } from '../../commons';
 
 const addressSchema = z.object({
   addressLine1: z
@@ -309,7 +309,7 @@ export const apiTool = {
   input: inputSchema,
   run: async ({ headers, path, query, body }: z.infer<typeof inputSchema>) => {
     const url = new URL(
-      `https://api.maesn.dev/accounting/bills/${path.billId}`
+      `${MAESN_API_BASE_URL}/accounting/bills/${path.billId}`
     );
     if (query?.environmentName)
       url.searchParams.append('environmentName', query.environmentName);

@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { checkStoredHeaders } from '../../commons';
+import { checkStoredHeaders, MAESN_API_BASE_URL } from '../../commons';
 
 const taxRateSchema = z.object({
   id: z.string().optional().describe('Tax rate id'),
@@ -91,7 +91,7 @@ export const apiTool = {
   input: inputSchema,
   run: async ({ headers, query, body }: z.infer<typeof inputSchema>) => {
     const url = new URL(
-      `https://api.maesn.dev/accounting/expenses`
+      `${MAESN_API_BASE_URL}/accounting/expenses`
     );
     if (query?.environmentName)
       url.searchParams.append('environmentName', query.environmentName);

@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { checkStoredHeaders } from '../../commons';
+import { checkStoredHeaders, MAESN_API_BASE_URL } from '../../commons';
 
 const inputSchema = z.object({
   headers: z.object({
@@ -46,7 +46,7 @@ export const apiTool = {
   input: inputSchema,
   run: async ({ headers, query }: z.infer<typeof inputSchema>) => {
     const url = new URL(
-      `https://api.maesn.dev/accounting/bills`
+      `${MAESN_API_BASE_URL}/accounting/bills`
     );
     if (query?.pagination) {
       if (query.pagination.page)

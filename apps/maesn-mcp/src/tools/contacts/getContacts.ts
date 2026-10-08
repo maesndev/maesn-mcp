@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { checkStoredHeaders } from '../../commons';
+import { checkStoredHeaders, MAESN_API_BASE_URL } from '../../commons';
 
 const inputSchema = z.object({
   headers: z
@@ -48,7 +48,7 @@ export const apiTool = {
   input: inputSchema,
   run: async ({ headers, query }: z.infer<typeof inputSchema>) => {
     const url = new URL(
-      `https://unified-backend-prod.azurewebsites.net/accounting/contacts`
+      `${MAESN_API_BASE_URL}/accounting/contacts`
     );
     if (query?.pagination) {
       if (query.pagination.page)

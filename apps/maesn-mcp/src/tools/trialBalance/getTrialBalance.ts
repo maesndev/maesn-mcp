@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { checkStoredHeaders, fetchErrorMessage, pageLimitSchema } from '../../commons';
+import { checkStoredHeaders, fetchErrorMessage, pageLimitSchema, MAESN_API_BASE_URL } from '../../commons';
 
 const inputSchema = z.object({
   headers: z.object({
@@ -58,7 +58,7 @@ export const apiTool = {
   input: inputSchema,
   run: async ({ headers, query }: z.infer<typeof inputSchema>) => {
     const url = new URL(
-      `https://unified-backend-prod.azurewebsites.net/accounting/trialBalance`
+      `${MAESN_API_BASE_URL}/accounting/trialBalance`
     );
     if (query?.pagination) {
       if (query.pagination.page)

@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { checkStoredHeaders, fetchErrorMessage, pageLimitSchema } from '../../commons';
+import { checkStoredHeaders, fetchErrorMessage, pageLimitSchema, MAESN_API_BASE_URL } from '../../commons';
 
 const mapJournalEntry =(journalEntry: any) => ({
   id: journalEntry.id,
@@ -81,7 +81,7 @@ export const apiTool = {
   input: inputSchema,
   run: async ({ headers, query }: z.infer<typeof inputSchema>) => {
     const url = new URL(
-      `https://unified-backend-prod.azurewebsites.net/accounting/journalEntries`
+      `${MAESN_API_BASE_URL}/accounting/journalEntries`
     );
     if (query?.pagination) {
       if (query.pagination.page)

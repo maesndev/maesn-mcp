@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { checkStoredHeaders, fetchErrorMessage } from '../../commons';
+import { checkStoredHeaders, fetchErrorMessage, MAESN_API_BASE_URL } from '../../commons';
 
 const inputSchema = z.object({
   headers: z.object({
@@ -23,7 +23,7 @@ export const apiTool = {
   input: inputSchema,
   run: async ({ headers, query }: z.infer<typeof inputSchema>) => {
     const url = new URL(
-      `https://unified-backend-prod.azurewebsites.net/accounting/files/documentExtensions`
+      `${MAESN_API_BASE_URL}/accounting/files/documentExtensions`
     );
     if (query?.companyId) url.searchParams.append('companyId', query.companyId);
 

@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { checkStoredHeaders } from '../../commons';
+import { checkStoredHeaders, MAESN_API_BASE_URL } from '../../commons';
 
 const addressSchema = z.object({
   city: z.string().describe("City name of the address").optional(),
@@ -93,7 +93,7 @@ export const apiTool = {
   input: inputSchema,
   run: async ({ headers, query, body }: z.infer<typeof inputSchema>) => {
     const url = new URL(
-      `https://unified-backend-prod.azurewebsites.net/accounting/bookingProposals`
+      `${MAESN_API_BASE_URL}/accounting/bookingProposals`
     );
     if (query?.environmentName)
       url.searchParams.append('environmentName', query.environmentName);

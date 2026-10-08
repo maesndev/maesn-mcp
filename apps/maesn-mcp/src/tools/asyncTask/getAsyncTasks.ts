@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { checkStoredHeaders, fetchErrorMessage } from '../../commons';
+import { checkStoredHeaders, fetchErrorMessage, MAESN_API_BASE_URL } from '../../commons';
 
 const DEFAULT_MAX_ITEMS = 100;
 
@@ -67,7 +67,7 @@ export const apiTool = {
   input: inputSchema,
   run: async ({ headers, path, query, result }: z.infer<typeof inputSchema>) => {
     const url = new URL(
-      `https://unified-backend-prod.azurewebsites.net/accounting/asyncTask/${encodeURIComponent(path.asyncTaskId)}`
+      `${MAESN_API_BASE_URL}/accounting/asyncTask/${encodeURIComponent(path.asyncTaskId)}`
     );
     if (query?.companyId) url.searchParams.append('companyId', query.companyId);
     if (query?.page) url.searchParams.append('page', query.page.toString());
